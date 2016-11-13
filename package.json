@@ -1,0 +1,15 @@
+{
+  "name": "jethead-print",
+  "version": "1.0.0",
+  "description": "Print to JetHead robot",
+  "main": "index.js",
+  "bin": "index.js",
+  "preferGlobal": true,
+  "author": "Owen Trueblood",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "minimist": "^1.2.0",
+    "ragecode": "git+https://github.com/jmptable/ragecode.git"
+  }
+}
