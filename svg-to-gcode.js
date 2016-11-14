@@ -87,6 +87,9 @@ function toGcode(svgString, opts) {
         return robot;
     }, robot);
 
+    robot.stopDrawing();
+    robot.moveTo(0, 0);
+
     return robot.gcode;
 }
 
