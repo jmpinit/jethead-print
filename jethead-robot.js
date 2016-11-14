@@ -75,6 +75,12 @@ class JetHeadRobot {
         const pwm = Math.floor(1000 * limitedAngle / Math.PI);
         const dwellTime = this.secondsPerRadian * Math.abs(limitedAngle - this.angle);
 
+        // don't draw while rotating
+        const wasDrawing = this.drawing;
+        if (wasDrawing) {
+            this.stopDrawing();
+        }
+
         // move to correct offset
         this.angle = limitedAngle;
         this.addPosition(this.position.x, this.position.y);
@@ -84,6 +90,11 @@ class JetHeadRobot {
 
         // dwell long enough to complete rotation
         this.addCode(`G4 P${dwellTime}`);
+
+        // begin drawing again
+        if (wasDrawing) {
+            this.startDrawing();
+        }
     }
 
     startDrawing() {
