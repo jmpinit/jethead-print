@@ -11,7 +11,7 @@ function clamp(v, min, max) {
 class JetHeadRobot {
     constructor() {
         this.rate = pt(1000, 1000, 100);
-        this.limit = pt(290, 290, 10);
+        this.limit = pt(280, 280, 10);
         this.position = pt(0, 0, 0);
         this.stepsPerMM = pt(40, 40, 1287.3);
 
