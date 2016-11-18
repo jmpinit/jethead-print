@@ -3,8 +3,43 @@
 const fs = require('fs');
 const minimist = require('minimist');
 const ragecode = require('ragecode').ragecode;
+const osc = require('osc');
 const toGcode = require('./svg-to-gcode');
 const JetHeadRobot = require('./jethead-robot');
+
+function serveOSC(instructions, interval, port) {
+    console.log(`sending OSC messages to 127.0.0.1 on port ${port}`);
+    const udpPort = new osc.UDPPort({});
+
+    udpPort.on('open', () => {
+        udpPort.on('error', error => console.log(`An error occurred: ${error.message}`));
+
+        const sendInterval = setInterval(() => {
+            const instruction = instructions.shift();
+
+            if (instruction === undefined) {
+                clearInterval(sendInterval);
+                console.log('done');
+                return;
+            }
+
+            if (instruction.type === 'location') {
+                const { x, y } = instruction.position;
+
+                udpPort.send({
+                    address: '/position',
+                    args: [x, y],
+                }, '127.0.0.1', port);
+            } else if (instruction.type === 'endStroke') {
+                udpPort.send({
+                    address: '/endStroke',
+                }, '127.0.0.1', port);
+            }
+        }, interval);
+    });
+
+    udpPort.open();
+}
 
 function die(msg) {
     console.log(msg);
@@ -30,7 +65,7 @@ function main() {
                 type: 'location',
                 position: { x, y },
             });
-            
+
             parser.instructions.push({ type: 'endStroke' });
         };
 
@@ -42,7 +77,13 @@ function main() {
 
     const svg = ragecode.toSVG(parser.instructions);
 
-    if (argv.svg) {
+    if (argv.osc) {
+        if (!argv.port) {
+            die('must specify --port');
+        }
+
+        serveOSC(parser.instructions, parseInt(argv.interval, 10) || 100, parseInt(argv.port, 10));
+    } else if (argv.svg) {
         console.log(svg);
     } else {
         console.log(toGcode(svg));

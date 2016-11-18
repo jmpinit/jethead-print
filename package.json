@@ -10,6 +10,14 @@
   "dependencies": {
     "cheerio": "^0.22.0",
     "minimist": "^1.2.0",
+    "osc": "^2.1.0",
     "ragecode": "git+https://github.com/jmptable/ragecode.git"
+  },
+  "devDependencies": {
+    "eslint": "^3.10.2",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.7.1"
   }
 }
