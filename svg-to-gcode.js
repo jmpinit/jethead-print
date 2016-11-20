@@ -36,7 +36,7 @@ function toGcode(svgString, opts) {
     opts = opts || {};
     const minMoveDistance = 0.001; // mm
 
-    let robot = new JetHeadRobot();
+    let robot = new JetHeadRobot(opts.width || 280, opts.height || 280);
 
     const {
         targetWidth = robot.limit.x,

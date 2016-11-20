@@ -86,7 +86,19 @@ function main() {
     } else if (argv.svg) {
         console.log(svg);
     } else {
-        console.log(toGcode(svg));
+        let width = 280;
+        let height = 280;
+
+        if (argv.width || argv.height) {
+            if (!(argv.width && argv.height)) {
+                die('Must supply width and height together');
+            }
+
+            width = parseFloat(argv.width, 10);
+            height = parseFloat(argv.height, 10);
+        }
+
+        console.log(toGcode(svg, { width, height }));
     }
 }
 
